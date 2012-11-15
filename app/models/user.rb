@@ -8,10 +8,13 @@
 #  created_at :datetime        not null
 #  updated_at :datetime        not null
 #
-
+require 'gravtastic'
 class User < ActiveRecord::Base
 	attr_accessible :email, :name, :password, :password_confirmation
 	has_secure_password
+
+	include Gravtastic
+	is_gravtastic
 
 	before_save { self.email.downcase! }
 
