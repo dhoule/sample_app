@@ -5,6 +5,7 @@ describe "Micropost pages" do
 	subject { page }
 
 	let(:user) { FactoryGirl.create(:user) }
+	
 	before { sign_in user }
 
 	describe "with valid information" do
@@ -42,5 +43,19 @@ describe "Micropost pages" do
 				expect { click_link "delete" }.should change(Micropost, :count).by(-1)
 			end
 		end
-	end						
+	end
+
+	describe "index" do
+
+		describe "pagination" do
+
+			it { should have_selector('div', class: 'pagination') }
+
+			it "should list each micropost" do
+				user.microposts.paginate(page: 1).each do |micropost|
+					page.should have_selector('li#', text: micropost.content)
+				end
+			end
+		end
+	end										
 end
